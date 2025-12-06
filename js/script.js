@@ -18,7 +18,7 @@ async function callGeminiOCR(file) {
     contents: [
       {
         parts: [
-          { text: "Extrahiere nur den Text aus diesem Bild, ohne Erklärungen. Versuche die Formatierung beizubehalten, indem du es in HTML formatierst. Und ggf. Tabellen zu erkennen. Lorem-ipsum-text ersetze bitte sinnvoll mit fiktiven Daten, dass es zum Rest des Bildes passt." },
+          { text: "Extrahiere nur den Text aus diesem Bild, ohne Erklärungen. gib mir ein JSON zurück das so aussieht: {text: '', html: ''}. Versuche die Formatierung beizubehalten, indem du es in HTML formatierst. Und ggf. Tabellen zu erkennen. In dem JSON soll unter text nur der reine Text zurückgegeben werden und unter html soll das Schreiben als html formatiert sein, aber ohne img-Tags oder Ähnliche Dinge, die im html Fehler werfen könnten, weil eine src angegeben werden müsste." },
           {
             inlineData: {
               data: base64.split(',')[1],
@@ -42,7 +42,21 @@ async function callGeminiOCR(file) {
   }
 
   const result = await resp.json();
-  return result.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+  let rawText = result.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+  const cleanedText = rawText.trim().replace(/^```(?:json)?\s*|\s*```$/gm, "");
+  
+  let parsedJson;
+
+  try {
+    parsedJson = JSON.parse(cleanedText);
+  } catch (err) {
+    console.error("JSON konnte nicht geparst werden:", err, cleanedText);
+    throw err;
+  }
+  
+  return parsedJson;
 }
 
 
@@ -65,11 +79,13 @@ async function processAllFiles() {
   let searchValues = searchValuesInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
   const files = INPUT_FILE.files;
   let text = "";
+  let html = "";
 
 
   for (const file of files) {
-    const fileText = await callGeminiOCR(file);
-    text += fileText + "\n";
+    const fileJSON = await callGeminiOCR(file);
+    text += fileJSON.text + "\n";
+    html += fileJSON.html + "<br>";
   }
 
   FILES.push({
@@ -80,6 +96,7 @@ async function processAllFiles() {
     docDate,
     originals: await Promise.all(Array.from(files).map(f => fileToBase64(f))),
     text,
+    html,
     searchValues
   });
 
@@ -97,5 +114,6 @@ function fileClicked(fileId) {
   btnBox.innerHTML = `
     <button onclick="showImage(${file.id})">Originals</button>
     <button onclick="showText(${file.id})">Text</button>
+    <button onclick="showHTML(${file.id})">HTML</button>
   `;
 }

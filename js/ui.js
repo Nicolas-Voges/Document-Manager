@@ -62,6 +62,12 @@ function showImage(fileId) {
   });
 }
 
+function showHTML(fileId) {
+  const file = FILES.find(f => f.id === fileId);
+  fileContentElement = document.getElementById("fileContent");
+  fileContentElement.innerHTML = file.html ? file.html : "<i>No html extracted.</i>";
+}
+
 function clearDocDetailView() {
   fileContentElement = document.getElementById("fileContent");
   fileContentElement.innerHTML = "<i>Select a document to view its details.</i>";
