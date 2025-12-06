@@ -64,7 +64,6 @@ function loadObjFromStorage(key) {
   }
 }
 
-
 function saveKey() {
   const KEY = INPUT_API_KEY.value;
   if (!KEY || KEY.trim() === '') {
@@ -91,4 +90,57 @@ function checkAPIKey() {
     APIKeyInStorage = false;
     API_KEY = null;
   }
+}
+
+function getAllSubcategoryIds(categoryId) {
+  const result = [];
+
+  function recurse(id) {
+    const children = CATEGORIES.filter(c => c.parentId === id);
+    for (const child of children) {
+      result.push(child.id);
+      recurse(child.id);
+    }
+  }
+
+  recurse(categoryId);
+  return result;
+}
+
+function countFilesRecursively(categoryId) {
+  const ids = [categoryId, ...getAllSubcategoryIds(categoryId)];
+
+  return FILES.filter(f => ids.includes(f.categoryId)).length;
+}
+
+function getCategoryPath(cat) {
+  const chain = [];
+  let current = cat;
+
+  while (current) {
+    chain.push(current.name);
+    current = CATEGORIES.find(c => c.id === current.parentId);
+  }
+
+  return chain.reverse().join(" / ");
+}
+
+function addCategorie() {
+  const name = document.getElementById('catNameInput').value;
+  const color = document.getElementById('catColorInput').value;
+  let parentId = document.getElementById('catParentSelect').value;
+  parentId = parentId ? parseInt(parentId) : null;
+  const data = {
+    name: name,
+    createdAt: new Date().toISOString(),
+    color: color,
+    updatedAt: new Date().toISOString(),
+    id: getNewId(CATEGORIES),
+    parentId: parentId
+  }
+  CATEGORIES.push(data);
+  saveObjInStorage('CATEGORIES', CATEGORIES, 'local');
+  renderView({categoryId: parentId});
+  toggleSectionVisibility('addCategorie')
+  renderCategorySelect()
 }
