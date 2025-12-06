@@ -72,6 +72,84 @@
             <div id="fileContent"></div>
         </section>
 
+        <!-- Popup sections -->
+
+        <section id="addDoc" class="popupSection addDocSection d-none">
+            <form class="addDocForm" onsubmit="processAllFiles(); return false;">
+                <h2>Add New Document</h2>
+
+                <div class="flexColumn">
+                    <label for="docNameInput">Document name:</label>
+                    <input id="docNameInput" placeholder="Document Name" required>
+                </div>
+
+                <div class="flexColumn">
+                    <label for="docDateInput">Document date:</label>
+                    <input id="docDateInput" type="date" required>
+                </div>
+
+                <div class="flexColumn">
+                    <label for="docCategorySelect">Select category:</label>
+                    <select id="docCategorySelect">
+                        <!-- dynamic category options -->
+                    </select>
+                </div>
+
+                <div class="flexColumn">
+                    <label for="fileInput">Select image file(s):</label>
+                    <input id="fileInput" type="file" accept="image/*" multiple>
+                </div>
+
+                <div class="flexColumn">
+                    <label for="searchValues">your search terms separated by a comma:</label>
+                    <input id="searchValues" type="text">
+                </div>
+
+                <button type="submit">Add Document</button>
+
+            </form>
+        </section>
+
+        <section id="addCategorie" class="popupSection addCategorieSection d-none">
+            <h2>Add new Category</h2>
+            <form onsubmit="addCategorie(); return false;">
+                <div class="flexColumn">
+                    <label for="catNameInput">Category name:</label>
+                    <input id="catNameInput" type="text">
+                </div>
+
+                <div class="flexColumn">
+                    <label for="catColorInput">Choose color:</label>
+                    <input id="catColorInput" type="color">
+                </div>
+
+                <div class="flexColumn">
+                    <label for="catParentSelect">Select parent category:</label>
+                    <select id="catParentSelect">
+                        <!-- dynamic category options -->
+                    </select>
+                </div>
+
+                <button type="submit">Add Category</button>
+            </form>
+        </section>
+
+        <section id="APIKey" class="popupSection APIKeySection d-none">
+            <h2>Enter your API Key</h2>
+
+            <a href="https://aistudio.google.com/apikey?hl=de" target="_blank">Get your API key here</a>
+
+            <div>
+                <label for="APIKeyInput"></label>
+                <input id="APIKeyInput" type="password" placeholder="Your Google Gemini API Key">
+            </div>
+
+            <div>
+                <p>Save your Google Gemini API key local:</p>
+                <button id="btnSaveSession" onclick="saveKey('session')">Save for session</button>
+                <button id="btnSaveLocal" onclick="saveKey('local')">Save permanent</button>
+            </div>
+        </section>
     </main>
 
     <footer class="site-footer">

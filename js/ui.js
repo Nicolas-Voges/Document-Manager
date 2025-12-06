@@ -1,12 +1,12 @@
 function toggleSectionVisibility(sectionId) {
-  closeAllOverlaySections(sectionId);
+  closeAllpopupSections(sectionId);
   const section = document.getElementById(sectionId);
   if (section) {
     section.classList.toggle('d-none');
   }
 }
 
-function closeAllOverlaySections(sectionId) {
+function closeAllpopupSections(sectionId) {
   const overlayIds = ["addDoc", "addCategorie", "APIKey"];
   let ids = overlayIds.filter(id => id !== sectionId);
   ids.forEach(id => {

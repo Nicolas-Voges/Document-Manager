@@ -47,6 +47,23 @@ main {
     position: relative;
 }
 
+input {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    cursor: pointer;
+    padding: 6px 12px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .sectionControls {
     display: flex;
     justify-content: space-between;
@@ -110,4 +127,35 @@ table td {
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.popupSection {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.addDocSection {
+    top: 60px;
+    right: 20px;
+}
+
+.addCategorieSection {
+    top: 60px;
+    right: 150px;
+}
+
+.APIKeySection {
+    top: 60px;
+    right: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.d-none {
+    display: none !important;
 }
