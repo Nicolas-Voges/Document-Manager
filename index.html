@@ -23,8 +23,12 @@
                 <input id="searchInput" placeholder="Search for document or categories..." />
                 <button id="searchBtn">Search</button>
             </div>
-
+            
             <div>
+                <input id="savePermanently" onclick="changeStorage()" class="checkbox"  type="checkbox">
+                <label for="savePermanently">Save permanently</label>
+                <input id="useDummyData" onclick="checkForDummyData()" class="checkbox" type="checkbox" checked>
+                <label for="useDummyData">Use dummy data</label>
                 <button id="btnImportAPI" onclick="toggleSectionVisibility('APIKey')">API Key</button>
                 <button id="btnNewCategory" onclick="toggleSectionVisibility('addCategorie')">NewCategory</button>
                 <button id="btnAddFiles" onclick="toggleSectionVisibility('addDoc')">Add Image(s)</button>

@@ -93,8 +93,6 @@ function renderRootCategories() {
 }
 
 function renderCategory(categoryId) {
-  const category = CATEGORIES.find(c => c.id === categoryId);
-
   const subcats = CATEGORIES.filter(c => c.parentId === categoryId);
   const files = FILES.filter(f => f.categoryId === categoryId);
 
@@ -104,7 +102,6 @@ function renderCategory(categoryId) {
   catBody.innerHTML = "";
   fileBody.innerHTML = "";
 
-  // --- Subkategorien ---
   for (const cat of subcats) {
     const subCount = CATEGORIES.filter(c => c.parentId === cat.id).length;
     const fileCount = countFilesRecursively(cat.id);
@@ -112,7 +109,6 @@ function renderCategory(categoryId) {
     catBody.innerHTML += createCategoryRow(cat, subCount, fileCount);
   }
 
-  // --- Dateien ---
   for (const file of files) {
     fileBody.innerHTML += createFileRow(file);
   }

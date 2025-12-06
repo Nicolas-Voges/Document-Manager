@@ -1,7 +1,9 @@
 function init() {
+  checkSavePermanent()
   checkAPIKey();
-  FILES = loadObjFromStorage('FILES') || dummyDataFiles;
-  CATEGORIES = loadObjFromStorage('CATEGORIES') || dummyDataCategories;
+  FILES = loadObjFromStorage('FILES') || [];
+  CATEGORIES = loadObjFromStorage('CATEGORIES') || [];
+  setDummyData();
   renderCategorySelect();
   renderView({ categoryId: null })
   if (!APIKeyInStorage) {
@@ -116,4 +118,43 @@ function fileClicked(fileId) {
     <button onclick="showText(${file.id})">Text</button>
     <button onclick="showHTML(${file.id})">HTML</button>
   `;
+}
+
+
+function changeStorage() {
+    let keyValue = null;
+    let fileValue = null;
+    let categoryValue = null
+    if (document.getElementById('savePermanently').checked) {
+        keyValue = loadVariableFromStorage('KEY');
+        fileValue = loadObjFromStorage('FILES');
+        categoryValue = loadObjFromStorage('CATEGORIES');
+        savePermanent = true;
+        if (keyValue) saveVariableInStorage('KEY', keyValue);
+        if (fileValue) saveObjInStorage('FILES', fileValue);
+        if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
+        saveVariableInStorage('savePermanent', savePermanent)
+    } else {
+        const keys = ['KEY', 'FILES', 'CATEGORIES']
+        savePermanent = true;
+        keyValue = loadVariableFromStorage('KEY');
+        fileValue = loadObjFromStorage('FILES');
+        categoryValue = loadObjFromStorage('CATEGORIES');
+        savePermanent = false;
+        if (keyValue) saveVariableInStorage('KEY', keyValue);
+        if (fileValue) saveObjInStorage('FILES', fileValue);
+        if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
+        for (let i = 0; i < keys.length; i++) {
+            localStorage.removeItem(keys[i])
+        }  
+        localStorage.removeItem('savePermanent')
+    }
+}
+
+function checkSavePermanent() {
+    if (localStorage.getItem('savePermanent')) {
+        loadFromLocalDtorage = true
+        document.getElementById('savePermanently').checked = true;
+        savePermanent = true;
+    }
 }

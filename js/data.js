@@ -3,6 +3,8 @@ let FILES = [];
 let CATEGORIES = [];
 let APIKeyInStorage = false;
 let savePermanent = false;
+let loadFromLocalStorage = false;
+let useDummyData = true;
 
 /**
  * This function saves a variable to local storage.
@@ -12,9 +14,9 @@ let savePermanent = false;
  */
 function saveVariableInStorage(key, variable) {
   if (savePermanent) {
-    localStorage.setItem(key, variable)
+    localStorage.setItem(key, variable);
   } else{
-    sessionStorage.setItem(key, variable)
+    sessionStorage.setItem(key, variable);
   }
 }
 
@@ -28,9 +30,9 @@ function saveVariableInStorage(key, variable) {
  */
 function loadVariableFromStorage(key) {
   if (savePermanent) {
-    return localStorage.getItem(key)
+    return localStorage.getItem(key);
   } else {
-    return sessionStorage.getItem(key)
+    return sessionStorage.getItem(key);
   }
 }
 
@@ -73,12 +75,14 @@ function saveKey() {
   API_KEY = KEY
   saveVariableInStorage('KEY', KEY);
   BTN_ADD_IMAGE.disabled = false;
-  toggleSectionVisibility('APIKey')
+  toggleSectionVisibility('APIKey');
 }
 
 function getNewId(array) {
-  if (array.length === 0) return 1;
-  return Math.max(...array.map(f => f.id)) + 1;
+  if (array.length === 0) return 101;
+  let newId = Math.max(...array.map(f => f.id)) + 1;
+  if (newId <= 100) newId = 101;
+  return newId;
 }
 
 function checkAPIKey() {
@@ -137,10 +141,39 @@ function addCategorie() {
     updatedAt: new Date().toISOString(),
     id: getNewId(CATEGORIES),
     parentId: parentId
-  }
+  };
   CATEGORIES.push(data);
-  saveObjInStorage('CATEGORIES', CATEGORIES);
+  const userCategories = CATEGORIES.filter(cat => cat.id > 100);
+  saveObjInStorage('CATEGORIES', userCategories);
   renderView({categoryId: parentId});
-  toggleSectionVisibility('addCategorie')
+  toggleSectionVisibility('addCategorie');
   renderCategorySelect()
+}
+
+function checkForDummyData() {
+    if (document.getElementById('useDummyData').checked) {
+        useDummyData = true;
+        saveVariableInStorage('useDummyData', 'use');
+        CATEGORIES.push(...dummyDataCategories);
+        FILES.push(...dummyDataFiles);
+        renderView({'categoryId': null});
+    } else {
+        CATEGORIES = CATEGORIES.filter(cat => cat.id > 100);
+        FILES = FILES.filter(cat => cat.id > 100);
+        useDummyData = false;
+        saveVariableInStorage('useDummyData', 'notuse');
+        renderView({'categoryId': null});
+    }
+}
+
+
+function setDummyData() {
+    const useDummy = loadVariableFromStorage('useDummyData');
+    if (!useDummy || useDummy === 'use') {
+        document.getElementById('useDummyData').checked = true;
+        checkForDummyData();
+    } else {
+        document.getElementById('useDummyData').checked = false;
+        checkForDummyData();
+    }
 }
