@@ -27,3 +27,46 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+header {
+    border-bottom: 2px solid #111;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+h1 {
+    font-size: 20px
+}
+
+main {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.sectionControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.sectionControls input {
+    padding: 8px 10px;
+    width: 380px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sectionControls button{
+    padding: 8px 10px;
+    margin-left: 8px;
+    border-width: 1px;
+    border-style: outset;
+    border-color: buttonborder;
+    border-radius: 4px;
+    font-size: 16px;
+}

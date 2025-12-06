@@ -10,22 +10,37 @@
     <script src="js/templates.js"></script>
 </head>
 
-<body>
-    <header class="site-header">
+<body onload="init()">
+    <header">
         <h1>Document Manager</h1>
         <nav id="breadcrumb">Root</nav>
-    </header>
+        </header>
 
-    <main>
+        <main>
+            <main>
+                <section class="sectionControls">
+                    <div>
+                        <input id="searchInput" placeholder="Search for document or categories..." />
+                        <button id="searchBtn">Search</button>
+                    </div>
 
-    </main>
+                    <div>
+                        <button id="btnImportAPI" onclick="toggleSectionVisibility('APIKey')">API Key</button>
+                        <button id="btnNewCategory" onclick="toggleSectionVisibility('addCategorie')">NewCategory</button>
+                        <button id="btnAddFiles" onclick="toggleSectionVisibility('addDoc')">Add Image(s)</button>
+                    </div>
+                </section>
 
-    <footer class="site-footer">
-        <small>© Document Manager</small>
-    </footer>
 
-    <script src="js/ui.js"></script>
-    <script src="js/script.js"></script>
+
+            </main>
+
+            <footer class="site-footer">
+                <small>© Document Manager</small>
+            </footer>
+
+            <script src="js/ui.js"></script>
+            <script src="js/script.js"></script>
 </body>
 
 </html>
