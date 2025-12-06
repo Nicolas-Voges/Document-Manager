@@ -100,3 +100,14 @@ table td {
     margin-left: 16px;
     flex: 1
 }
+
+.flex {
+    display: flex;
+    gap: 12px;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
