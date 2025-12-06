@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Manager</title>
     <link rel="stylesheet" href="style.css">
+    <script src="js/dummydata.js"></script>
     <script src="js/data.js"></script>
     <script src="js/templates.js"></script>
 </head>
@@ -146,8 +147,7 @@
 
             <div>
                 <p>Save your Google Gemini API key local:</p>
-                <button id="btnSaveSession" onclick="saveKey('session')">Save for session</button>
-                <button id="btnSaveLocal" onclick="saveKey('local')">Save permanent</button>
+                <button id="btnSaveSession" onclick="saveKey()">Save</button>
             </div>
         </section>
     </main>

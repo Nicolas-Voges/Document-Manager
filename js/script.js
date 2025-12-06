@@ -1,7 +1,7 @@
 function init() {
   checkAPIKey();
-  FILES = loadObjFromStorage('FILES', 'local') || loadObjFromStorage('FILES', 'session') || dummyDataFiles;
-  CATEGORIES = loadObjFromStorage('CATEGORIES', 'local') || loadObjFromStorage('CATEGORIES', 'session') || dummyDataCategories;
+  FILES = loadObjFromStorage('FILES') || dummyDataFiles;
+  CATEGORIES = loadObjFromStorage('CATEGORIES') || dummyDataCategories;
   renderCategorySelect();
   renderView({ categoryId: null })
   if (!APIKeyInStorage) {
@@ -83,7 +83,7 @@ async function processAllFiles() {
     searchValues
   });
 
-  saveObjInStorage('FILES', FILES, 'local');
+  saveObjInStorage('FILES', FILES);
   renderView({ categoryId });
   toggleSectionVisibility('addDoc');
 }

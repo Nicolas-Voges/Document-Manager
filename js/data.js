@@ -139,7 +139,7 @@ function addCategorie() {
     parentId: parentId
   }
   CATEGORIES.push(data);
-  saveObjInStorage('CATEGORIES', CATEGORIES, 'local');
+  saveObjInStorage('CATEGORIES', CATEGORIES);
   renderView({categoryId: parentId});
   toggleSectionVisibility('addCategorie')
   renderCategorySelect()
