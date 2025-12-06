@@ -11,36 +11,69 @@
 </head>
 
 <body onload="init()">
-    <header">
+    <header>
         <h1>Document Manager</h1>
         <nav id="breadcrumb">Root</nav>
-        </header>
+    </header>
 
-        <main>
-            <main>
-                <section class="sectionControls">
-                    <div>
-                        <input id="searchInput" placeholder="Search for document or categories..." />
-                        <button id="searchBtn">Search</button>
-                    </div>
+    <main>
+        <section class="sectionControls">
+            <div>
+                <input id="searchInput" placeholder="Search for document or categories..." />
+                <button id="searchBtn">Search</button>
+            </div>
 
-                    <div>
-                        <button id="btnImportAPI" onclick="toggleSectionVisibility('APIKey')">API Key</button>
-                        <button id="btnNewCategory" onclick="toggleSectionVisibility('addCategorie')">NewCategory</button>
-                        <button id="btnAddFiles" onclick="toggleSectionVisibility('addDoc')">Add Image(s)</button>
-                    </div>
-                </section>
+            <div>
+                <button id="btnImportAPI" onclick="toggleSectionVisibility('APIKey')">API Key</button>
+                <button id="btnNewCategory" onclick="toggleSectionVisibility('addCategorie')">NewCategory</button>
+                <button id="btnAddFiles" onclick="toggleSectionVisibility('addDoc')">Add Image(s)</button>
+            </div>
+        </section>
 
+        <section class="sectionTable">
+            <h2><span>
+                    <nav id="breadcrumbInH2">Root</nav>
+                </span> Categories</h2>
 
+            <table id="categoriesTable">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Last change</th>
+                        <th>Created at</th>
+                        <th>Sub categories</th>
+                        <th>Documents total</th>
+                    </tr>
+                </thead>
+                <tbody id="categoriesBody"></tbody>
+            </table>
 
-            </main>
+            <h2>Files</h2>
+            <table id="filesTable" hidden>
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Created</th>
+                        <th>File Date</th>
+                        <th>Extracted Text</th>
+                    </tr>
+                </thead>
+                <tbody id="filesBody"></tbody>
+            </table>
 
-            <footer class="site-footer">
-                <small>© Document Manager</small>
-            </footer>
+            <div id="infoBox" class="info-box">
+                <p>Select a category to see subcategories and documents.</p>
+            </div>
+        </section>
 
-            <script src="js/ui.js"></script>
-            <script src="js/script.js"></script>
+    </main>
+
+    <footer class="site-footer">
+        <small>© Document Manager</small>
+    </footer>
+
+    <script src="js/ui.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>

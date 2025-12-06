@@ -70,3 +70,33 @@ main {
     border-radius: 4px;
     font-size: 16px;
 }
+
+.table-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc
+}
+
+table thead tr {
+    background: #f7f7f7
+}
+
+table th,
+table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left
+}
+
+.info-box {
+    padding: 16px;
+    border: 1px dashed #ccc;
+    margin-left: 16px;
+    flex: 1
+}
