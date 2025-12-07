@@ -15,7 +15,7 @@ let useDummyData = true;
 function saveVariableInStorage(key, variable) {
   if (savePermanent) {
     localStorage.setItem(key, variable);
-  } else{
+  } else {
     sessionStorage.setItem(key, variable);
   }
 }
@@ -145,35 +145,81 @@ function addCategorie() {
   CATEGORIES.push(data);
   const userCategories = CATEGORIES.filter(cat => cat.id > 100);
   saveObjInStorage('CATEGORIES', userCategories);
-  renderView({categoryId: parentId});
+  renderView({ categoryId: parentId });
   toggleSectionVisibility('addCategorie');
   renderCategorySelect()
 }
 
 function checkForDummyData() {
-    if (document.getElementById('useDummyData').checked) {
-        useDummyData = true;
-        saveVariableInStorage('useDummyData', 'use');
-        CATEGORIES.push(...dummyDataCategories);
-        FILES.push(...dummyDataFiles);
-        renderView({'categoryId': null});
-    } else {
-        CATEGORIES = CATEGORIES.filter(cat => cat.id > 100);
-        FILES = FILES.filter(cat => cat.id > 100);
-        useDummyData = false;
-        saveVariableInStorage('useDummyData', 'notuse');
-        renderView({'categoryId': null});
-    }
+  if (document.getElementById('useDummyData').checked) {
+    useDummyData = true;
+    saveVariableInStorage('useDummyData', 'use');
+    CATEGORIES = [...dummyDataCategories, ...CATEGORIES];
+    FILES = [...dummyDataFiles, ...FILES];
+    renderView({ 'categoryId': null });
+  } else {
+    CATEGORIES = CATEGORIES.filter(cat => cat.id > 100);
+    FILES = FILES.filter(cat => cat.id > 100);
+    useDummyData = false;
+    saveVariableInStorage('useDummyData', 'notuse');
+    renderView({ 'categoryId': null });
+  }
+}
+
+function removeDummyData(arr) {
+  return arr.filter(item => item.id > 100);
 }
 
 
 function setDummyData() {
-    const useDummy = loadVariableFromStorage('useDummyData');
-    if (!useDummy || useDummy === 'use') {
-        document.getElementById('useDummyData').checked = true;
-        checkForDummyData();
-    } else {
-        document.getElementById('useDummyData').checked = false;
-        checkForDummyData();
-    }
+  const useDummy = loadVariableFromStorage('useDummyData');
+  if (!useDummy || useDummy === 'use') {
+    document.getElementById('useDummyData').checked = true;
+    checkForDummyData();
+  } else {
+    document.getElementById('useDummyData').checked = false;
+    checkForDummyData();
+  }
 }
+
+
+function deleteSearchValue(fileId, value) {
+  const file = FILES.find(f => f.id === fileId);
+  file.searchValues = file.searchValues.filter(val => val != value);
+  saveObjInStorage('FILES', removeDummyData(FILES));
+  fileClicked(fileId);
+}
+
+function findFiles(searchTerms) {
+  return FILES.filter(file => {
+    const haystack = [
+      file.name || "",
+      file.text || "",
+      file.docDate || "",
+      (file.searchValues || []).join(" ")
+    ].join(" ").toLowerCase();
+
+    return searchTerms.every(term => haystack.includes(term));
+  });
+}
+
+function findCategories(searchTerms) {
+  return CATEGORIES.filter(cat => {
+    const name = (cat.name || "").toLowerCase();
+    return searchTerms.every(term => name.includes(term));
+  });
+}
+
+function getParentChainIds(catId) {
+    const ids = [];
+    let currentId = catId;
+
+    while (currentId !== null) {
+      const c = CATEGORIES.find(c => c.id === currentId);
+      if (!c) break;
+      ids.push(c.id);
+      currentId = c.parentId;
+    }
+
+    return ids;
+  }

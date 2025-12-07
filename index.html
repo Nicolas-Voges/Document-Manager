@@ -19,9 +19,9 @@
 
     <main>
         <section class="sectionControls">
-            <div>
-                <input id="searchInput" placeholder="Search for document or categories..." />
-                <button id="searchBtn">Search</button>
+            <div class="flexColumn">
+                <label for="searchInput">Separate search terms by a comma.</label>
+                <input oninput="searchAll()" id="searchInput" placeholder="Search for document or categories..." />
             </div>
             
             <div>
@@ -71,9 +71,15 @@
             </div>
         </section>
 
-        <section class="flexColumn">
-            <h2>Document Details</h2>
-            <div id="detailBtnBox" class="flex"></div>
+        <section class="flexColumn g24">
+            <div>
+                <h2>Document Details</h2>
+                <div id="detailBtnBox" class="flex"></div>
+            </div>
+            <div id="findByBox" class="d-none">
+                <h3>Find by</h3>
+                <div id="searchValues" class="flex"></div>
+            </div>
             <div id="fileContent"></div>
         </section>
 
@@ -106,8 +112,8 @@
                 </div>
 
                 <div class="flexColumn">
-                    <label for="searchValues">your search terms separated by a comma:</label>
-                    <input id="searchValues" type="text">
+                    <label for="inputSearchValues">your search terms separated by a comma:</label>
+                    <input id="inputSearchValues" type="text">
                 </div>
 
                 <button type="submit">Add Document</button>

@@ -13,8 +13,7 @@ body {
 }
 
 h1,
-h2,
-h3 {
+h2 {
     margin-bottom: 15px;
     color: #444;
 }
@@ -71,6 +70,10 @@ footer {
     margin-top: 24px
 }
 
+.g24 {
+    gap: 24px !important;
+}
+
 .sectionControls {
     display: flex;
     justify-content: space-between;
@@ -80,7 +83,7 @@ footer {
 
 .sectionControls input {
     padding: 8px 10px;
-    width: 380px;
+    width: 300px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -88,6 +91,11 @@ footer {
 .checkbox{
     width: auto !important;
     margin-left: 8px;
+}
+
+.searchValue {
+    margin-right: 4px;
+    cursor: crosshair;
 }
 
 .sectionControls button{

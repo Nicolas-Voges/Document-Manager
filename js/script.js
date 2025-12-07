@@ -48,7 +48,7 @@ async function callGeminiOCR(file) {
   let rawText = result.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
   const cleanedText = rawText.trim().replace(/^```(?:json)?\s*|\s*```$/gm, "");
-  
+
   let parsedJson;
 
   try {
@@ -57,7 +57,7 @@ async function callGeminiOCR(file) {
     console.error("JSON konnte nicht geparst werden:", err, cleanedText);
     throw err;
   }
-  
+
   return parsedJson;
 }
 
@@ -77,7 +77,7 @@ async function processAllFiles() {
   let name = document.getElementById('docNameInput').value;
   let docDate = document.getElementById('docDateInput').value;
   let categoryId = parseInt(document.getElementById('docCategorySelect').value);
-  let searchValuesInput = document.getElementById('searchValues').value;
+  let searchValuesInput = document.getElementById('inputSearchValues').value;
   let searchValues = searchValuesInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
   const files = INPUT_FILE.files;
   let text = "";
@@ -86,8 +86,9 @@ async function processAllFiles() {
 
   for (const file of files) {
     const fileJSON = await callGeminiOCR(file);
-    text += fileJSON.text + "\n";
-    html += fileJSON.html + "<br>";
+
+    text += fileJSON.text + "<br><br>";
+    html += fileJSON.html + "<br><hr><br>";
   }
 
   FILES.push({
@@ -101,8 +102,8 @@ async function processAllFiles() {
     html,
     searchValues
   });
-
-  saveObjInStorage('FILES', FILES);
+  const userFiles = FILES.filter(cat => cat.id > 100);
+  saveObjInStorage('FILES', userFiles);
   renderView({ categoryId });
   toggleSectionVisibility('addDoc');
 }
@@ -110,51 +111,92 @@ async function processAllFiles() {
 
 function fileClicked(fileId) {
   const file = FILES.find(f => f.id === fileId);
-  fileContentElement = document.getElementById("fileContent");
+  const fileContentElement = document.getElementById("fileContent");
   fileContentElement.innerHTML = file.text ? file.text : "<i>No text extracted.</i>";
-  btnBox = document.getElementById("detailBtnBox");
+  const btnBox = document.getElementById("detailBtnBox");
   btnBox.innerHTML = `
-    <button onclick="showImage(${file.id})">Originals</button>
+    <button onclick="showImage(${file.id})">Original(s)</button>
     <button onclick="showText(${file.id})">Text</button>
     <button onclick="showHTML(${file.id})">HTML</button>
   `;
+  const searchBox = document.getElementById('searchValues');
+  searchBox.innerHTML = "";
+  document.getElementById('findByBox').classList.remove("d-none");
+  for (let i = 0; i < file.searchValues.length; i++) {
+    searchBox.innerHTML += `<span class="searchValue" title="delete" onclick="deleteSearchValue(${file.id}, '${file.searchValues[i]}')">${file.searchValues[i]}</span>`;
+  }
 }
 
 
 function changeStorage() {
-    let keyValue = null;
-    let fileValue = null;
-    let categoryValue = null
-    if (document.getElementById('savePermanently').checked) {
-        keyValue = loadVariableFromStorage('KEY');
-        fileValue = loadObjFromStorage('FILES');
-        categoryValue = loadObjFromStorage('CATEGORIES');
-        savePermanent = true;
-        if (keyValue) saveVariableInStorage('KEY', keyValue);
-        if (fileValue) saveObjInStorage('FILES', fileValue);
-        if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
-        saveVariableInStorage('savePermanent', savePermanent)
-    } else {
-        const keys = ['KEY', 'FILES', 'CATEGORIES']
-        savePermanent = true;
-        keyValue = loadVariableFromStorage('KEY');
-        fileValue = loadObjFromStorage('FILES');
-        categoryValue = loadObjFromStorage('CATEGORIES');
-        savePermanent = false;
-        if (keyValue) saveVariableInStorage('KEY', keyValue);
-        if (fileValue) saveObjInStorage('FILES', fileValue);
-        if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
-        for (let i = 0; i < keys.length; i++) {
-            localStorage.removeItem(keys[i])
-        }  
-        localStorage.removeItem('savePermanent')
+  let keyValue = null;
+  let fileValue = null;
+  let categoryValue = null;
+  let dummyValue = null;
+  if (document.getElementById('savePermanently').checked) {
+    keyValue = loadVariableFromStorage('KEY');
+    dummyValue = loadVariableFromStorage('useDummyData');
+    fileValue = loadObjFromStorage('FILES');
+    categoryValue = loadObjFromStorage('CATEGORIES');
+    savePermanent = true;
+    if (keyValue) saveVariableInStorage('KEY', keyValue);
+    if (dummyValue) saveVariableInStorage('useDummyData', dummyValue);
+    if (fileValue) saveObjInStorage('FILES', fileValue);
+    if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
+    saveVariableInStorage('savePermanent', savePermanent);
+  } else {
+    const keys = ['KEY', 'FILES', 'CATEGORIES', 'useDummyData']
+    savePermanent = true;
+    keyValue = loadVariableFromStorage('KEY');
+    dummyValue = loadVariableFromStorage('useDummyData');
+    fileValue = loadObjFromStorage('FILES');
+    categoryValue = loadObjFromStorage('CATEGORIES');
+    savePermanent = false;
+    if (keyValue) saveVariableInStorage('KEY', keyValue);
+    if (dummyValue) saveVariableInStorage('useDummyData', dummyValue);
+    if (fileValue) saveObjInStorage('FILES', fileValue);
+    if (categoryValue) saveObjInStorage('CATEGORIES', categoryValue);
+    for (let i = 0; i < keys.length; i++) {
+      localStorage.removeItem(keys[i]);
     }
+    localStorage.removeItem('savePermanent');
+  }
 }
 
 function checkSavePermanent() {
-    if (localStorage.getItem('savePermanent')) {
-        loadFromLocalDtorage = true
-        document.getElementById('savePermanently').checked = true;
-        savePermanent = true;
-    }
+  if (localStorage.getItem('savePermanent')) {
+    loadFromLocalDtorage = true;
+    document.getElementById('savePermanently').checked = true;
+    savePermanent = true;
+  }
+}
+
+
+function searchAll() {
+  const catBody = document.getElementById("categoriesBody");
+  const fileBody = document.getElementById("filesBody");
+  const rawInput = document.getElementById("searchInput").value.trim().toLowerCase();
+  const searchTerms = rawInput.split(",").map(s => s.trim()).filter(s => s.length > 0);
+
+  catBody.innerHTML = "";
+  fileBody.innerHTML = "";
+
+  if (searchTerms.length === 0) {
+    renderView({ categoryId: null });
+    return;
+  }
+
+  const matchedFiles = findFiles(searchTerms);
+  const catsByName = findCategories(searchTerms);
+  const fileMatchedCategoryIds = matchedFiles.map(f => f.categoryId);
+  const catsByFiles = fileMatchedCategoryIds.flatMap(id => getParentChainIds(id));
+  const matchedCategoryIds = [...new Set([
+    ...catsByName.map(c => c.id),
+    ...catsByFiles
+  ])];
+  const matchedCategories = CATEGORIES.filter(cat =>
+    matchedCategoryIds.includes(cat.id)
+  );
+
+  renderSearchResults(matchedCategories, catBody, fileBody, matchedFiles);
 }

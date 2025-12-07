@@ -69,10 +69,12 @@ function showHTML(fileId) {
 }
 
 function clearDocDetailView() {
-  fileContentElement = document.getElementById("fileContent");
+  const fileContentElement = document.getElementById("fileContent");
   fileContentElement.innerHTML = "<i>Select a document to view its details.</i>";
   btnBox = document.getElementById("detailBtnBox");
   btnBox.innerHTML = "";
+  document.getElementById('searchValues').innerHTML = "";
+  document.getElementById('findByBox').classList.add("d-none");
 }
 
 function renderRootCategories() {
@@ -120,6 +122,7 @@ function renderCategory(categoryId) {
 function renderView(state) {
   updateBreadcrumb(state.categoryId);
   clearDocDetailView();
+  document.getElementById('searchInput').value = "";
   if (state.categoryId === null) {
     renderRootCategories();
   } else {
@@ -171,4 +174,20 @@ function showTable(id) {
 function hideTable(id) {
   const el = document.getElementById(id);
   if (el) el.hidden = true;
+}
+
+function renderSearchResults(matchedCategories, catBody, fileBody, matchedFiles) {
+  for (const cat of matchedCategories) {
+    const subCount = CATEGORIES.filter(c => c.parentId === cat.id).length;
+    const fileCount = countFilesRecursively(cat.id);
+    catBody.innerHTML += createCategoryRow(cat, subCount, fileCount);
+  }
+
+  for (const file of matchedFiles) {
+    fileBody.innerHTML += createFileRow(file);
+  }
+
+  showTable("categoriesTable");
+  showTable("filesTable");
+  clearDocDetailView();
 }
