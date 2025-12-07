@@ -73,6 +73,7 @@ function fileToBase64(file) {
 
 
 async function processAllFiles() {
+  document.getElementById('addDocSubmitBtn').disabled = true;
   let id = getNewId(FILES)
   let name = document.getElementById('docNameInput').value;
   let docDate = document.getElementById('docDateInput').value;
@@ -106,6 +107,7 @@ async function processAllFiles() {
   saveObjInStorage('FILES', userFiles);
   renderView({ categoryId });
   toggleSectionVisibility('addDoc');
+  document.getElementById('addDocSubmitBtn').disabled = false;
 }
 
 

@@ -2,6 +2,16 @@ const BTN_ADD_IMAGE = document.getElementById('btnAddFiles');
 const INPUT_FILE = document.getElementById('fileInput');
 const INPUT_API_KEY = document.getElementById("APIKeyInput")
 
+let categorySortState = {
+  column: null,
+  direction: "asc"
+};
+
+let fileSortState = {
+  column: null,
+  direction: "asc"
+};
+
 function disableBtn(btn) {
   if (btn) {
     btn.disabled = true;
@@ -197,4 +207,74 @@ function renderSearchResults(matchedCategories, catBody, fileBody, matchedFiles)
   showTable("categoriesTable");
   showTable("filesTable");
   clearDocDetailView();
+}
+
+
+function sortCategoriesBy(column) {
+  const visibleCategories = [...document.querySelectorAll("#categoriesBody tr")];
+  if (visibleCategories.length === 0) return;
+
+  const dir = (categorySortState.column === column && categorySortState.direction === "asc") ? "desc" : "asc";
+
+  categorySortState = { column, direction: dir };
+
+  CATEGORIES.sort((a, b) => {
+
+    let valA, valB;
+
+    if (column === "subCount") {
+      valA = CATEGORIES.filter(c => c.parentId === a.id).length;
+      valB = CATEGORIES.filter(c => c.parentId === b.id).length;
+    }
+    else if (column === "fileCount") {
+      valA = countFilesRecursively(a.id);
+      valB = countFilesRecursively(b.id);
+    }
+    else {
+      valA = a[column] ?? "";
+      valB = b[column] ?? "";
+    }
+
+    valA = valA.toString().toLowerCase();
+    valB = valB.toString().toLowerCase();
+
+    if (valA < valB) return dir === "asc" ? -1 : 1;
+    if (valA > valB) return dir === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  renderView({ categoryId: null });
+}
+
+
+function sortFilesBy(column) {
+  const visibleFiles = [...document.querySelectorAll("#filesBody tr")];
+  if (visibleFiles.length === 0) return;
+
+  const dir = (fileSortState.column === column && fileSortState.direction === "asc") ? "desc" : "asc";
+
+  fileSortState = { column, direction: dir };
+
+  FILES.sort((a, b) => {
+    let valA = (a[column] ?? "").toString().toLowerCase();
+    let valB = (b[column] ?? "").toString().toLowerCase();
+
+    if (valA < valB) return dir === "asc" ? -1 : 1;
+    if (valA > valB) return dir === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  const bc = [...document.querySelectorAll("#breadcrumb .breadcrumb-item")];
+  const last = bc[bc.length - 1];
+  const isRoot = last?.textContent === "Root";
+
+  let currentCategoryId = null;
+  if (!isRoot) {
+    const match = last.getAttribute("onclick")?.match(/categoryId:\s*(\d+)/);
+    if (match) {
+      currentCategoryId = parseInt(match[1]);
+    }
+  }
+
+  renderCategory(currentCategoryId);
 }

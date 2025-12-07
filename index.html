@@ -23,9 +23,9 @@
                 <label for="searchInput">Separate search terms by a comma.</label>
                 <input oninput="searchAll()" id="searchInput" placeholder="Search for document or categories..." />
             </div>
-            
+
             <div>
-                <input id="savePermanently" onclick="changeStorage()" class="checkbox"  type="checkbox">
+                <input id="savePermanently" onclick="changeStorage()" class="checkbox" type="checkbox">
                 <label for="savePermanently">Save permanently</label>
                 <input id="useDummyData" onclick="checkForDummyData()" class="checkbox" type="checkbox" checked>
                 <label for="useDummyData">Use dummy data</label>
@@ -43,11 +43,11 @@
             <table id="categoriesTable">
                 <thead>
                     <tr>
-                        <th>Category</th>
-                        <th>Last change</th>
-                        <th>Created at</th>
-                        <th>Sub categories</th>
-                        <th>Documents total</th>
+                        <th onclick="sortCategoriesBy('name')">Category</th>
+                        <th onclick="sortCategoriesBy('updatedAt')">Last change</th>
+                        <th onclick="sortCategoriesBy('createdAt')">Created at</th>
+                        <th onclick="sortCategoriesBy('subCount')">Sub categories</th>
+                        <th onclick="sortCategoriesBy('id')">Documents total</th>
                     </tr>
                 </thead>
                 <tbody id="categoriesBody"></tbody>
@@ -57,10 +57,10 @@
             <table id="filesTable" hidden>
                 <thead>
                     <tr>
-                        <th>Filename</th>
-                        <th>Created</th>
-                        <th>File Date</th>
-                        <th>Extracted Text</th>
+                        <th onclick="sortFilesBy('name')">Filename</th>
+                        <th onclick="sortFilesBy('createdAt')">Created</th>
+                        <th onclick="sortFilesBy('docDate')">File Date</th>
+                        <th onclick="sortFilesBy('text')">Extracted Text</th>
                     </tr>
                 </thead>
                 <tbody id="filesBody"></tbody>
@@ -116,7 +116,7 @@
                     <input id="inputSearchValues" type="text">
                 </div>
 
-                <button type="submit">Add Document</button>
+                <button id="addDocSubmitBtn" type="submit">Add Document</button>
 
             </form>
         </section>
