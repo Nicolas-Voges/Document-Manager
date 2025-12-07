@@ -41,7 +41,14 @@ function renderCategorySelect() {
 
   selectParentCat.innerHTML += `<option value=""> - </option>`;
 
-  CATEGORIES.forEach(cat => {
+  const sortedCategories = [...CATEGORIES]
+    .map(cat => ({
+      ...cat,
+      fullPath: getCategoryPath(cat).toLowerCase()
+    }))
+    .sort((a, b) => a.fullPath.localeCompare(b.fullPath));
+
+  sortedCategories.forEach(cat => {
     selectCat.innerHTML += getOption(cat);
     selectParentCat.innerHTML += getOption(cat);
   });
