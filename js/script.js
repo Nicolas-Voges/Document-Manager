@@ -107,6 +107,7 @@ async function processAllFiles() {
   saveObjInStorage('FILES', userFiles);
   renderView({ categoryId });
   toggleSectionVisibility('addDoc');
+  clearInputs();
   document.getElementById('addDocSubmitBtn').disabled = false;
 }
 

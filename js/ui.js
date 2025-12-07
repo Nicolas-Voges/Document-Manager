@@ -1,6 +1,7 @@
 const BTN_ADD_IMAGE = document.getElementById('btnAddFiles');
 const INPUT_FILE = document.getElementById('fileInput');
-const INPUT_API_KEY = document.getElementById("APIKeyInput")
+const INPUT_API_KEY = document.getElementById("APIKeyInput");
+const inputIds = ['docNameInput', 'docDateInput', 'fileInput', 'inputSearchValues', 'catNameInput', 'catColorInput'];
 
 let categorySortState = {
   column: null,
@@ -11,6 +12,12 @@ let fileSortState = {
   column: null,
   direction: "asc"
 };
+
+function clearInputs() {
+  for (let i = 0; i < inputIds.length; i++) {
+    document.getElementById(inputIds[i]).value = "";
+  }
+}
 
 function disableBtn(btn) {
   if (btn) {

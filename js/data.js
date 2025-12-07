@@ -76,6 +76,7 @@ function saveKey() {
   saveVariableInStorage('KEY', KEY);
   BTN_ADD_IMAGE.disabled = false;
   toggleSectionVisibility('APIKey');
+  INPUT_API_KEY.value = "";
 }
 
 function getNewId(array) {
@@ -147,7 +148,8 @@ function addCategorie() {
   saveObjInStorage('CATEGORIES', userCategories);
   renderView({ categoryId: parentId });
   toggleSectionVisibility('addCategorie');
-  renderCategorySelect()
+  renderCategorySelect();
+  clearInputs();
 }
 
 function checkForDummyData() {
