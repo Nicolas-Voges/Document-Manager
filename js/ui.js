@@ -2,6 +2,7 @@ const BTN_ADD_IMAGE = document.getElementById('btnAddFiles');
 const INPUT_FILE = document.getElementById('fileInput');
 const INPUT_API_KEY = document.getElementById("APIKeyInput");
 const inputIds = ['docNameInput', 'docDateInput', 'fileInput', 'inputSearchValues', 'catNameInput', 'catColorInput'];
+let lastScrollY = 0;
 
 let categorySortState = {
   column: null,
@@ -50,14 +51,18 @@ function closeAllpopupSections(sectionId) {
   });
 }
 
-function renderCategorySelect() {
-  let selectCat = document.getElementById("docCategorySelect");
-  let selectParentCat = document.getElementById("catParentSelect");
-  selectCat.innerHTML = "";
-  selectParentCat.innerHTML = "";
+function renderCategorySelect(selectIds) {
+  for (let i = 0; i < selectIds.length; i++) {
+    document.getElementById(selectIds[i]).innerHTML = "";
+    if (selectIds[i] === 'catParentSelect' || selectIds[i] === 'catEditParentSelect') {
+      document.getElementById(selectIds[i]).innerHTML += `<option value="null"> - </option>`;
+    }
+  }
 
-  selectParentCat.innerHTML += `<option value=""> - </option>`;
+  fillSelectElementWithOptions(selectIds);
+}
 
+function fillSelectElementWithOptions(selectIds) {
   const sortedCategories = [...CATEGORIES]
     .map(cat => ({
       ...cat,
@@ -66,8 +71,9 @@ function renderCategorySelect() {
     .sort((a, b) => a.fullPath.localeCompare(b.fullPath));
 
   sortedCategories.forEach(cat => {
-    selectCat.innerHTML += getOption(cat);
-    selectParentCat.innerHTML += getOption(cat);
+    for (let i = 0; i < selectIds.length; i++) {
+      document.getElementById(selectIds[i]).innerHTML += getOption(cat);
+    }
   });
 }
 
@@ -284,4 +290,12 @@ function sortFilesBy(column) {
   }
 
   renderCategory(currentCategoryId);
+}
+
+function closeOverlay() {
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = "";
+  overlay.classList.add('d-none');
+  window.scrollTo(0, lastScrollY);
+  document.body.style.overflowY = 'scroll';
 }

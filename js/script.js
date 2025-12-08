@@ -4,7 +4,7 @@ function init() {
   FILES = loadObjFromStorage('FILES') || [];
   CATEGORIES = loadObjFromStorage('CATEGORIES') || [];
   setDummyData();
-  renderCategorySelect();
+  renderCategorySelect(['docCategorySelect', 'catParentSelect']);
   renderView({ categoryId: null })
   if (!APIKeyInStorage) {
     BTN_ADD_IMAGE.disabled = true;
@@ -87,9 +87,18 @@ async function processAllFiles() {
 
   for (const file of files) {
     const fileJSON = await callGeminiOCR(file);
+    // const fileJSON = {
+    //   text: "Beispieltext, wenn das Kontingent nicht reicht",
+    //   html: "Beispieltext, wenn das Kontingent nicht reicht"
+    // }
 
-    text += fileJSON.text + "<br><br>";
-    html += fileJSON.html + "<br><hr><br>";
+    if (files.length > 1) {
+      text += fileJSON.text + "<br><br>";
+      html += fileJSON.html + "<br><hr><br>";
+    } else {
+      text += fileJSON.text;
+      html += fileJSON.html;
+    }
   }
 
   FILES.push({
@@ -202,4 +211,34 @@ function searchAll() {
   );
 
   renderSearchResults(matchedCategories, catBody, fileBody, matchedFiles);
+}
+
+
+function editFile(fileId) {
+  lastScrollY = window.scrollY;
+  window.scrollTo(0, 0);
+  document.body.style.overflowY = 'hidden';
+  const file = FILES.find(f => f.id === fileId);
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML += getEditFile(file);
+  overlay.classList.remove('d-none');
+  renderCategorySelect(['catEditSelect']);
+  document.getElementById("catEditSelect").value = file.categoryId;
+}
+
+
+function editCategory(categoryId) {
+  lastScrollY = window.scrollY;
+  window.scrollTo(0, 0);
+  document.body.style.overflowY = 'hidden';
+  // const category = CATEGORIES.find(f => f.id === categoryId);
+  const overlay = document.getElementById('overlay');
+  // console.log('COLOR: ', category.color);
+  
+  overlay.innerHTML += getEditCategory();
+  overlay.classList.remove('d-none');
+  // renderCategorySelect(['catEditParentSelect']);
+  // console.log(category.parentId);
+  
+  // document.getElementById("catEditParentSelect").value = category.parentId;
 }

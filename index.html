@@ -12,12 +12,14 @@
 </head>
 
 <body onload="init()">
+    <div onclick="closeOverlay()" id="overlay" class="overlay d-none"></div>
+
     <header>
         <h1>Document Manager</h1>
         <nav id="breadcrumb">Root</nav>
     </header>
 
-    <main>
+    <main id="main">
         <section class="sectionControls">
             <div class="flexColumn">
                 <label for="searchInput">Separate search terms by a comma.</label>

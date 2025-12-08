@@ -148,7 +148,7 @@ function addCategorie() {
   saveObjInStorage('CATEGORIES', userCategories);
   renderView({ categoryId: parentId });
   toggleSectionVisibility('addCategorie');
-  renderCategorySelect();
+  renderCategorySelect(['docCategorySelect', 'catParentSelect']);
   clearInputs();
 }
 
@@ -213,15 +213,126 @@ function findCategories(searchTerms) {
 }
 
 function getParentChainIds(catId) {
-    const ids = [];
-    let currentId = catId;
+  const ids = [];
+  let currentId = catId;
 
-    while (currentId !== null) {
-      const c = CATEGORIES.find(c => c.id === currentId);
-      if (!c) break;
-      ids.push(c.id);
-      currentId = c.parentId;
-    }
-
-    return ids;
+  while (currentId !== null) {
+    const c = CATEGORIES.find(c => c.id === currentId);
+    if (!c) break;
+    ids.push(c.id);
+    currentId = c.parentId;
   }
+
+  return ids;
+}
+
+function updateFile(fileId) {
+  const file = FILES.find(f => f.id === fileId);
+  if (!file) return;
+
+  const name = document.getElementById("editNameInput").value;
+  const docDate = document.getElementById("editDocDateInput").value;
+  const categoryId = parseInt(document.getElementById("catEditSelect").value);
+  const searchValuesInput = document.getElementById("editSearchValuesInput").value;
+  const textInput = document.getElementById("textarea").value;
+
+  const searchValues = searchValuesInput
+    .split(",")
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
+
+  file.name = name;
+  file.docDate = docDate;
+  file.categoryId = categoryId;
+  file.searchValues = searchValues;
+  file.updatedAt = new Date().toISOString();
+  file.text = textInput;
+  const userFiles = FILES.filter(f => f.id > 100);
+  saveObjInStorage('FILES', userFiles);
+
+  const overlay = document.getElementById("overlay");
+  overlay.classList.add("d-none");
+  overlay.innerHTML = "";
+
+  document.body.style.overflowY = "auto";
+  window.scrollTo(0, lastScrollY || 0);
+
+  renderView({ categoryId });
+}
+
+function deleteFile(fileId) {
+  const file = FILES.find(f => f.id === fileId);
+  const categoryId = file.categoryId;
+
+  const ok = confirm("Do you really want to delete this file?");
+  if (!ok) return;
+
+  const index = FILES.findIndex(f => f.id === fileId);
+  if (index === -1) return;
+
+  FILES.splice(index, 1);
+
+  const userFiles = FILES.filter(f => f.id > 100);
+  saveObjInStorage('FILES', userFiles);
+
+  const overlay = document.getElementById("overlay");
+  overlay.classList.add("d-none");
+  overlay.innerHTML = "";
+
+  document.body.style.overflowY = "auto";
+  window.scrollTo(0, lastScrollY || 0);
+
+  renderView({ categoryId });
+}
+
+function updateCategory(catId) {
+  const category = CATEGORIES.find(c => c.id === catId);
+  if (!category) return;
+  debugger
+
+  const name = document.getElementById("editNameInput").value;
+  const color = document.getElementById("editColorInput").value;
+  let parentId = +document.getElementById("catEditParentSelect").value;
+  if (!parentId) {
+    parentId = null;
+  }
+  category.name = name;
+  category.color = color;
+  console.log('color: ', color);
+
+  category.parentId = parentId;
+  category.updatedAt = new Date().toISOString();
+  const userCategories = CATEGORIES.filter(c => c.id > 100);
+  saveObjInStorage('CATEGORIES', userCategories);
+  const overlay = document.getElementById("overlay");
+  overlay.classList.add("d-none");
+  overlay.innerHTML = "";
+
+  document.body.style.overflowY = "auto";
+  window.scrollTo(0, lastScrollY || 0);
+  renderView({ categoryId: parentId });
+}
+
+function deleteCategory(catId) {
+  const category = CATEGORIES.find(c => c.id === catId);
+
+  const ok = confirm("Do you really want to delete this categorie?");
+  if (!ok) return;
+
+  const index = CATEGORIES.findIndex(c => c.id === catId);
+  if (index === -1) return;
+
+  CATEGORIES.splice(index, 1);
+
+  const userCategories = CATEGORIES.filter(c => c.id > 100);
+  saveObjInStorage('CATEGORIES', userCategories);
+
+  const overlay = document.getElementById("overlay");
+  overlay.classList.add("d-none");
+  overlay.innerHTML = "";
+
+  document.body.style.overflowY = "auto";
+  window.scrollTo(0, lastScrollY || 0);
+
+  renderView({ categoryId: category.parentId });
+}

@@ -10,7 +10,7 @@ dummyDataCategories = [
   {
     name: "2025",
     createdAt: "2025-03-10",
-    color: "#ff5833a6",
+    color: "#ff5833",
     updatedAt: "2025-04-15",
     id: 2,
     parentId: 1
@@ -18,7 +18,7 @@ dummyDataCategories = [
   {
     name: "2024",
     createdAt: "2024-03-10",
-    color: "#ff5833a6",
+    color: "#ff5833",
     updatedAt: "2024-04-15",
     id: 3,
     parentId: 1
@@ -26,7 +26,7 @@ dummyDataCategories = [
   {
     name: "2023",
     createdAt: "2023-03-10",
-    color: "#ff5833a6",
+    color: "#ff5833",
     updatedAt: "2023-04-15",
     id: 4,
     parentId: 1
@@ -34,7 +34,7 @@ dummyDataCategories = [
   {
     name: "Versicherungen",
     createdAt: "2023-03-10",
-    color: "#33e0ffff",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 5,
     parentId: null
@@ -42,7 +42,7 @@ dummyDataCategories = [
   {
     name: "Auto",
     createdAt: "2023-03-10",
-    color: "#33e0ffc2",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 6,
     parentId: 5
@@ -50,7 +50,7 @@ dummyDataCategories = [
   {
     name: "Hausrat",
     createdAt: "2023-03-10",
-    color: "#33e0ffc2",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 7,
     parentId: 5
@@ -58,7 +58,7 @@ dummyDataCategories = [
   {
     name: "Lebensversicherung",
     createdAt: "2023-03-10",
-    color: "#33e0ffc2",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 8,
     parentId: 5
@@ -66,7 +66,7 @@ dummyDataCategories = [
   {
     name: "2025",
     createdAt: "2023-03-10",
-    color: "#33e0ff8a",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 9,
     parentId: 6
@@ -74,7 +74,7 @@ dummyDataCategories = [
   {
     name: "2025",
     createdAt: "2023-03-10",
-    color: "#33e0ff8a",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 10,
     parentId: 7
@@ -82,7 +82,7 @@ dummyDataCategories = [
   {
     name: "2025",
     createdAt: "2023-03-10",
-    color: "#33e0ff8a",
+    color: "#33e0ff",
     updatedAt: "2023-04-15",
     id: 11,
     parentId: 8
@@ -90,7 +90,7 @@ dummyDataCategories = [
   {
     name: "Kontoauszüge",
     createdAt: "2023-03-10",
-    color: "#fcff33ff",
+    color: "#fcff33",
     updatedAt: "2025-04-15",
     id: 12,
     parentId: null
@@ -98,7 +98,7 @@ dummyDataCategories = [
   {
     name: "Verträge",
     createdAt: "2023-03-10",
-    color: "#33ff5fff",
+    color: "#33ff5f",
     updatedAt: "2025-04-15",
     id: 13,
     parentId: null

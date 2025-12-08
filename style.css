@@ -70,6 +70,10 @@ footer {
     margin-top: 24px
 }
 
+textarea {
+    resize: none;
+}
+
 .g24 {
     gap: 24px !important;
 }
@@ -88,7 +92,7 @@ footer {
     border-radius: 4px;
 }
 
-.checkbox{
+.checkbox {
     width: auto !important;
     margin-left: 8px;
 }
@@ -98,7 +102,7 @@ footer {
     cursor: crosshair;
 }
 
-.sectionControls button{
+.sectionControls button {
     padding: 8px 10px;
     margin-left: 8px;
     border-width: 1px;
@@ -159,7 +163,7 @@ th {
     border: 1px solid #ccc;
     padding: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 10;
     top: 68px;
 }
 
@@ -276,6 +280,48 @@ th {
 
 tbody tr:nth-child(even) {
     background-color: white;
+}
+
+.overlay {
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlayForm {
+    background-color: white;
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-radius: 12px;
+}
+
+.overlayForm div {
+    width: 100%;
+}
+
+.overlayForm div input {
+    padding: 8px;
+}
+
+.deleteBtn {
+    background-color: red;
+    color: white;
+}
+
+.editBtnBox {
+    display: flex;
+    justify-content: space-between;
 }
 
 .d-none {
